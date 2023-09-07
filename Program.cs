@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WorkOrderContext>();
+builder.Services.AddTransient<WorkOrderRepository>();
 
 var app = builder.Build();
 
