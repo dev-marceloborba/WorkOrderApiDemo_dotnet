@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using WorkOrderApi.Commands.Requests;
+using WorkOrderApi.Handlers;
 
 namespace WorkOrderApi.Controllers;
 
@@ -8,8 +10,12 @@ public class WorkOrderController : ControllerBase
 {
     [Route("")]
     [HttpPost]
-    public async Task<ActionResult> Create()
+    public async Task<ActionResult> Create(
+        [FromBody] CreateWorkOrderRequest command,
+        [FromServices] ICreateWorkOrderHandler handler
+    )
     {
+        var response = await handler.Handle(command);
         return Ok();
     }
 
