@@ -1,4 +1,5 @@
 using WorkOrderApi.Data;
+using WorkOrderApi.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WorkOrderContext>();
 builder.Services.AddTransient<WorkOrderRepository>();
+builder.Services.AddTransient<ICreateWorkOrderHandler, CreateWorkOrderHandler>();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WorkOrderApi.Commands.Requests;
+using WorkOrderApi.Data;
 using WorkOrderApi.Handlers;
 
 namespace WorkOrderApi.Controllers;
@@ -16,7 +17,7 @@ public class WorkOrderController : ControllerBase
     )
     {
         var response = await handler.Handle(command);
-        return Ok();
+        return Ok(response);
     }
 
     [Route("{id}")]
@@ -48,8 +49,11 @@ public class WorkOrderController : ControllerBase
 
     [Route("")]
     [HttpGet]
-    public async Task<ActionResult> FindAll()
+    public async Task<ActionResult> FindAll(
+        [FromServices] WorkOrderRepository repository
+    )
     {
-        return Ok();
+        var result = await repository.FindAllAsync();
+        return Ok(result);
     }
 }
