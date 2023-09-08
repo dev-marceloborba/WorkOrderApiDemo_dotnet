@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WorkOrderContext>();
 builder.Services.AddTransient<WorkOrderRepository>();
 builder.Services.AddTransient<ICreateWorkOrderHandler, CreateWorkOrderHandler>();
+builder.Services.AddTransient<IUpdateWorkOrderHandler, UpdateWorkOrderHandler>();
 
 var app = builder.Build();
 

@@ -23,10 +23,13 @@ public class WorkOrderController : ControllerBase
     [Route("{id}")]
     [HttpPut]
     public async Task<ActionResult> Update(
-        [FromRoute] int id
+        [FromRoute] int id,
+        [FromBody] UpdateWorkOrderRequest command,
+        [FromServices] IUpdateWorkOrderHandler handler
     )
     {
-        return Ok();
+        var response = await handler.Handle(command);
+        return Ok(response);
     }
 
     [Route("{id}")]
@@ -41,10 +44,13 @@ public class WorkOrderController : ControllerBase
     [Route("{id}")]
     [HttpGet]
     public async Task<ActionResult> FindById(
-        [FromRoute] int id
+        [FromRoute] int id,
+        [FromBody] FindWorkOrderByIdRequest command,
+        [FromServices] IFindWorkOrderByIdHandler handler
     )
     {
-        return Ok();
+        var result = await handler.Handle(command);
+        return Ok(result);
     }
 
     [Route("")]
