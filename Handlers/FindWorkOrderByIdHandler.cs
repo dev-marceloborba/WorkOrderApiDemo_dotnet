@@ -23,8 +23,9 @@ public class FindWorkOrderByIdHandler : IFindWorkOrderByIdHandler
         {
             Id = workOrder.Id,
             Name = workOrder.EquipmentName,
-            CreatedAt = workOrder.CreatedDate,
-            TargetDate = workOrder.TargetDate
+            Description = workOrder.Description,
+            CreatedAt = workOrder.CreatedAt,
+            TargetDate = workOrder.Target
         };
     }
 }

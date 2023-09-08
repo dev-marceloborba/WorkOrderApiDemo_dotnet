@@ -1,3 +1,4 @@
+using AutoMapper;
 using WorkOrderApi.Commands.Requests;
 using WorkOrderApi.Commands.Responses;
 using WorkOrderApi.Data;
@@ -8,15 +9,17 @@ namespace WorkOrderApi.Handlers;
 public class CreateWorkOrderHandler : ICreateWorkOrderHandler
 {
     private readonly WorkOrderRepository _repository;
+    private readonly IMapper _mapper;
 
-    public CreateWorkOrderHandler(WorkOrderRepository repository)
+    public CreateWorkOrderHandler(WorkOrderRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<CreateWorkOrderResponse> Handle(CreateWorkOrderRequest command)
     {
-        var workOrder = new WorkOrderModel(command.Name, DateTime.Now);
+        var workOrder = _mapper.Map<WorkOrder>(command);
         workOrder.ExecuteWorkOrder();
 
         await _repository.CreateAsync(workOrder);

@@ -20,7 +20,7 @@ namespace WorkOrderApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
 
-            modelBuilder.Entity("WorkOrderApi.Models.WorkOrderModel", b =>
+            modelBuilder.Entity("WorkOrderApi.Models.WorkOrder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

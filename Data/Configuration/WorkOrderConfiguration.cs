@@ -4,9 +4,9 @@ using WorkOrderApi.Models;
 
 namespace WorkOrderApi.Data.Configuration;
 
-public class WorkOrderConfiguration : IEntityTypeConfiguration<WorkOrderModel>
+public class WorkOrderConfiguration : IEntityTypeConfiguration<WorkOrder>
 {
-    public void Configure(EntityTypeBuilder<WorkOrderModel> builder)
+    public void Configure(EntityTypeBuilder<WorkOrder> builder)
     {
         builder.ToTable("WorkOrder");
         builder.Property(x => x.EquipmentName).HasColumnType("varchar(50)");

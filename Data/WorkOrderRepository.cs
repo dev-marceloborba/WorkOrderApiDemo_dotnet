@@ -17,27 +17,27 @@ public class WorkOrderRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task CreateAsync(WorkOrderModel model)
+    public async Task CreateAsync(WorkOrder model)
     {
         await _context.WorkOrders.AddAsync(model);
     }
 
-    public void Update(WorkOrderModel model)
+    public void Update(WorkOrder model)
     {
         _context.Entry(model).State = EntityState.Modified;
     }
 
-    public void Delete(WorkOrderModel model)
+    public void Delete(WorkOrder model)
     {
         _context.Entry(model).State = EntityState.Deleted;
     }
 
-    public async Task<IEnumerable<WorkOrderModel>> FindAllAsync()
+    public async Task<IEnumerable<WorkOrder>> FindAllAsync()
     {
         return await _context.WorkOrders.AsNoTracking().ToListAsync();
     }
 
-    public async Task<WorkOrderModel?> FindByIdAsync(int id)
+    public async Task<WorkOrder?> FindByIdAsync(int id)
     {
         return await _context.WorkOrders.FirstOrDefaultAsync(x => x.Id == id);
     }

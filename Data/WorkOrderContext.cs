@@ -6,7 +6,7 @@ namespace WorkOrderApi.Data;
 
 public class WorkOrderContext : DbContext
 {
-    public DbSet<WorkOrderModel> WorkOrders { get; set; }
+    public DbSet<WorkOrder> WorkOrders { get; set; }
 
     public string DbPath { get; }
 

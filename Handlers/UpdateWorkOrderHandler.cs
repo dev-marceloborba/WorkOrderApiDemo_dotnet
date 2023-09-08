@@ -1,24 +1,26 @@
+using AutoMapper;
 using WorkOrderApi.Commands.Requests;
 using WorkOrderApi.Commands.Responses;
 using WorkOrderApi.Data;
-using WorkOrderApi.Models;
 
 namespace WorkOrderApi.Handlers;
 
 public class UpdateWorkOrderHandler : IUpdateWorkOrderHandler
 {
     private readonly WorkOrderRepository _repository;
+    private readonly IMapper _mapper;
 
-    public UpdateWorkOrderHandler(WorkOrderRepository repository)
+    public UpdateWorkOrderHandler(WorkOrderRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<UpdateWorkOrderResponse> Handle(UpdateWorkOrderRequest command)
     {
         var workOrder = await _repository.FindByIdAsync(command.Id);
 
-        //TODO: aplicar mapper.
+        _mapper.Map(command, workOrder);
 
         _repository.Update(workOrder);
         await _repository.Commit();
