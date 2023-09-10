@@ -10,5 +10,6 @@ public class WorkOrderConfiguration : IEntityTypeConfiguration<WorkOrder>
     {
         builder.ToTable("WorkOrder");
         builder.Property(x => x.EquipmentName).HasColumnType("varchar(50)");
+        builder.Property(x => x.Description).HasColumnType("varchar(200)");
     }
 }

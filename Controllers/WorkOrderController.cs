@@ -16,8 +16,12 @@ public class WorkOrderController : ControllerBase
         [FromServices] ICreateWorkOrderHandler handler
     )
     {
-        var response = await handler.Handle(command);
-        return Ok(response);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(UnprocessableEntity(ModelState));
+        }
+        var result = await handler.Handle(command);
+        return Ok(result);
     }
 
     [Route("{id}")]
@@ -28,17 +32,19 @@ public class WorkOrderController : ControllerBase
         [FromServices] IUpdateWorkOrderHandler handler
     )
     {
-        var response = await handler.Handle(command);
-        return Ok(response);
+        var result = await handler.Handle(command);
+        return Ok(result);
     }
 
     [Route("{id}")]
     [HttpDelete]
     public async Task<ActionResult> Delete(
-        [FromRoute] int id
+        [FromRoute] int id,
+        [FromServices] IDeleteWorkOrderHandler handler
     )
     {
-        return Ok();
+        var result = await handler.Handle(id);
+        return Ok(result);
     }
 
     [Route("{id}")]
