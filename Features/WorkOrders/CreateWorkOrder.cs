@@ -1,14 +1,17 @@
 using Carter;
 using FluentValidation;
+using Mapster;
 using MediatR;
+using WorkOrderApi.Contracts;
 using WorkOrderApi.Data;
 using WorkOrderApi.Models;
+using WorkOrderApi.Shared;
 
 namespace WorkOrderApi.Features.WorkOders;
 
 public static class CreateWorkOrder
 {
-    public class Command : IRequest<int>
+    public class Command : IRequest<Result<int>>
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -25,7 +28,7 @@ public static class CreateWorkOrder
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, int>
+    internal sealed class Handler : IRequestHandler<Command, Result<int>>
     {
         private readonly WorkOrderContext _context;
         private readonly IValidator<Command> _validator;
@@ -36,9 +39,17 @@ public static class CreateWorkOrder
             _validator = validator;
         }
 
-        public async Task<int> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(Command request, CancellationToken cancellationToken)
         {
             var validationResult = _validator.Validate(request);
+            if (!validationResult.IsValid)
+            {
+                return Result.Failure<int>(new Error(
+                    "CreateWorkOrder.Validation",
+                    validationResult.ToString()
+                ));
+            }
+
             var workOrder = new WorkOrder
             {
                 EquipmentName = request.Name,
@@ -53,16 +64,22 @@ public static class CreateWorkOrder
             return workOrder.Id;
         }
     }
+}
 
-    public class CreateWorkOrderEndpoint : ICarterModule
+
+public class CreateWorkOrderEndpoint : ICarterModule
+{
+    public void AddRoutes(IEndpointRouteBuilder app)
     {
-        public void AddRoutes(IEndpointRouteBuilder app)
+        app.MapPost("v2/work-orders", async (CreateWorkOrderRequest request, ISender sender) =>
         {
-            app.MapPost("v2/work-orders", async (Command command, ISender sender) =>
+            var command = request.Adapt<CreateWorkOrder.Command>();
+            var result = await sender.Send(command);
+            if (result.isFailure)
             {
-                var workOrderId = await sender.Send(command);
-                return Results.Ok(workOrderId);
-            });
-        }
+                return Results.BadRequest(result.Error);
+            }
+            return Results.Ok(result.Value);
+        });
     }
 }
