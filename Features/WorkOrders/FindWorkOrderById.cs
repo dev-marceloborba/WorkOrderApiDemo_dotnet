@@ -50,7 +50,7 @@ public class FindWorkOrderByIdEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("v2/work-orders/{id}", async (int id, ISender sender) =>
+        app.MapGet("v1/work-orders/{id}", async (int id, ISender sender) =>
         {
             var query = new FindWorkOrderById.Query { Id = id };
             var result = await sender.Send(query);

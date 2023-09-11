@@ -71,7 +71,7 @@ public class CreateWorkOrderEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("v2/work-orders", async (CreateWorkOrderRequest request, ISender sender) =>
+        app.MapPost("v1/work-orders", async (CreateWorkOrderRequest request, ISender sender) =>
         {
             var command = request.Adapt<CreateWorkOrder.Command>();
             var result = await sender.Send(command);

@@ -54,7 +54,7 @@ public class FindAllWorkOrdersEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("v2/work-orders", async (ISender sender) =>
+        app.MapGet("v1/work-orders", async (ISender sender) =>
         {
             var query = new FindAllWorkOrders.Query();
             var result = await sender.Send(query);

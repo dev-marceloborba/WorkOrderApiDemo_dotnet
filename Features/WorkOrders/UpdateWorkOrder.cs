@@ -71,7 +71,7 @@ public class UpdateWorkOrderEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut("v2/work-orders/{id}", async (int id, UpdateWorkOrderRequest request, ISender sender) =>
+        app.MapPut("v1/work-orders/{id}", async (int id, UpdateWorkOrderRequest request, ISender sender) =>
         {
             request.Id = id;
             var command = request.Adapt<UpdateWorkOrder.Command>();
