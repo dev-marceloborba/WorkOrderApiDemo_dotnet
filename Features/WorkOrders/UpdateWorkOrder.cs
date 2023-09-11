@@ -3,7 +3,6 @@ using FluentValidation;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using WorkOrderApi.Contract;
 using WorkOrderApi.Contracts;
 using WorkOrderApi.Data;
 using WorkOrderApi.Enums;

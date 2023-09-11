@@ -1,7 +1,7 @@
 using Carter;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using WorkOrderApi.Contract;
+using WorkOrderApi.Contracts;
 using WorkOrderApi.Data;
 using WorkOrderApi.Shared;
 

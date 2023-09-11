@@ -1,6 +1,6 @@
 using WorkOrderApi.Enums;
 
-namespace WorkOrderApi.Contract;
+namespace WorkOrderApi.Contracts;
 
 public class WorkOrderResponse
 {

@@ -1,8 +1,6 @@
 using Carter;
 using FluentValidation;
 using WorkOrderApi.Data;
-using WorkOrderApi.Features.WorkOders;
-using WorkOrderApi.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,10 +33,6 @@ builder.Services.AddCarter();
 builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Services.AddDbContext<WorkOrderContext>();
-builder.Services.AddTransient<WorkOrderRepository>();
-builder.Services.AddTransient<ICreateWorkOrderHandler, CreateWorkOrderHandler>();
-builder.Services.AddTransient<IUpdateWorkOrderHandler, UpdateWorkOrderHandler>();
-builder.Services.AddTransient<IDeleteWorkOrderHandler, DeleteWorkOrderHandler>();
 
 var app = builder.Build();
 
