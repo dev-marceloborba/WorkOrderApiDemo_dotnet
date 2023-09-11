@@ -2,7 +2,7 @@ using WorkOrderApi.Enums;
 
 namespace WorkOrderApi.Contract;
 
-public class FindWorkOrderByIdResponse
+public class WorkOrderResponse
 {
     public int Id { get; set; }
     public string? EquipmentName { get; set; }

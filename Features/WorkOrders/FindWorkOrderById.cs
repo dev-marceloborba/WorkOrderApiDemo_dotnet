@@ -9,12 +9,12 @@ namespace WorkOrderApi.Features;
 
 public static class FindWorkOrderById
 {
-    public class Query : IRequest<Result<FindWorkOrderByIdResponse>>
+    public class Query : IRequest<Result<WorkOrderResponse>>
     {
         public int Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Result<FindWorkOrderByIdResponse>>
+    internal sealed class Handler : IRequestHandler<Query, Result<WorkOrderResponse>>
     {
         private readonly WorkOrderContext _context;
 
@@ -23,11 +23,11 @@ public static class FindWorkOrderById
             _context = context;
         }
 
-        public async Task<Result<FindWorkOrderByIdResponse>> Handle(Query query, CancellationToken cancellationToken)
+        public async Task<Result<WorkOrderResponse>> Handle(Query query, CancellationToken cancellationToken)
         {
             var workOrder = await _context.WorkOrders
                 .Where(wo => wo.Id == query.Id)
-                .Select(wo => new FindWorkOrderByIdResponse
+                .Select(wo => new WorkOrderResponse
                 {
                     Id = wo.Id,
                     EquipmentName = wo.EquipmentName,
@@ -39,7 +39,7 @@ public static class FindWorkOrderById
                 .FirstOrDefaultAsync();
             if (workOrder == null)
             {
-                return Result.Failure<FindWorkOrderByIdResponse>(new Error("WorkOrder.NotFound", "Registro não encontrado"));
+                return Result.Failure<WorkOrderResponse>(new Error("WorkOrder.NotFound", "Registro não encontrado"));
             }
             return workOrder;
         }
