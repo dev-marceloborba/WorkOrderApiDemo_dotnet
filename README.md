@@ -6,5 +6,6 @@ It's an ASP.NET 7 Web-API with the following resources/patterns:
 - Usage of EF Core
 - Validation
 - CQRS
+- Minimal APIs
 
 I'll update this repo to include more features. For now, it's a CRUD application to handle work orders.
