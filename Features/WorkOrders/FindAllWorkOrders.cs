@@ -23,21 +23,21 @@ public static class FindAllWorkOrders
             _context = context;
         }
 
-        public async Task<Result<IEnumerable<WorkOrderResponse>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<WorkOrderResponse>>> Handle(Query query, CancellationToken cancellationToken)
         {
             try
             {
                 var workOrders = await _context.WorkOrders
-                .AsNoTracking()
-                .Select(wo => new WorkOrderResponse
-                {
-                    Id = wo.Id,
-                    EquipmentName = wo.EquipmentName,
-                    Description = wo.Description,
-                    CreatedAt = wo.CreatedAt,
-                    Target = wo.Target,
-                    WorkOrderStatus = wo.WorkOrderStatus
-                })
+                    .AsNoTracking()
+                    .Select(wo => new WorkOrderResponse
+                    {
+                        Id = wo.Id,
+                        EquipmentName = wo.EquipmentName,
+                        Description = wo.Description,
+                        CreatedAt = wo.CreatedAt,
+                        Target = wo.Target,
+                        WorkOrderStatus = wo.WorkOrderStatus
+                    })
                 .ToListAsync();
 
                 return workOrders;
