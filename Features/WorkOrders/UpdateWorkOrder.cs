@@ -8,7 +8,7 @@ using WorkOrderApi.Data;
 using WorkOrderApi.Enums;
 using WorkOrderApi.Shared;
 
-namespace WorkOrderApi.Features;
+namespace WorkOrderApi.Features.WorkOrders;
 
 public static class UpdateWorkOrder
 {
@@ -18,7 +18,6 @@ public static class UpdateWorkOrder
         public string? EquipmentName { get; set; }
         public string? Description { get; set; }
         public EWorkOrderStatus WorkOrderStatus { get; set; }
-        public DateTime CreatedAt { get; set; }
         public DateTime Target { get; set; }
     }
 
@@ -71,7 +70,7 @@ public class UpdateWorkOrderEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut("v1/work-orders/{id}", async (int id, UpdateWorkOrderRequest request, ISender sender) =>
+        app.MapPut("api/v1/work-orders/{id}", async (int id, UpdateWorkOrderRequest request, ISender sender) =>
         {
             request.Id = id;
             var command = request.Adapt<UpdateWorkOrder.Command>();

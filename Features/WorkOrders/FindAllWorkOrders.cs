@@ -5,7 +5,7 @@ using WorkOrderApi.Contracts;
 using WorkOrderApi.Data;
 using WorkOrderApi.Shared;
 
-namespace WorkOrderApi.Features;
+namespace WorkOrderApi.Features.WorkOrders;
 
 public static class FindAllWorkOrders
 {
@@ -54,7 +54,7 @@ public class FindAllWorkOrdersEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("v1/work-orders", async (ISender sender) =>
+        app.MapGet("api/v1/work-orders", async (ISender sender) =>
         {
             var query = new FindAllWorkOrders.Query();
             var result = await sender.Send(query);

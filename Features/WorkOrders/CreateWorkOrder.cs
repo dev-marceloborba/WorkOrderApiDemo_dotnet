@@ -7,13 +7,13 @@ using WorkOrderApi.Data;
 using WorkOrderApi.Models;
 using WorkOrderApi.Shared;
 
-namespace WorkOrderApi.Features.WorkOders;
+namespace WorkOrderApi.Features.WorkOrders;
 
 public static class CreateWorkOrder
 {
     public class Command : IRequest<Result<int>>
     {
-        public string Name { get; set; } = string.Empty;
+        public string EquipmentName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime Target { get; set; }
     }
@@ -22,7 +22,7 @@ public static class CreateWorkOrder
     {
         public void CreateWorkOrder()
         {
-            RuleFor(c => c.Name).NotEmpty().MinimumLength(2).MaximumLength(50);
+            RuleFor(c => c.EquipmentName).NotEmpty().MinimumLength(2).MaximumLength(50);
             RuleFor(c => c.Description).NotEmpty().MaximumLength(200);
             RuleFor(c => c.Target).NotEmpty();
         }
@@ -52,7 +52,7 @@ public static class CreateWorkOrder
 
             var workOrder = new WorkOrder
             {
-                EquipmentName = request.Name,
+                EquipmentName = request.EquipmentName,
                 Description = request.Description,
                 Target = request.Target
             };
@@ -71,7 +71,7 @@ public class CreateWorkOrderEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("v1/work-orders", async (CreateWorkOrderRequest request, ISender sender) =>
+        app.MapPost("api/v1/work-orders", async (CreateWorkOrderRequest request, ISender sender) =>
         {
             var command = request.Adapt<CreateWorkOrder.Command>();
             var result = await sender.Send(command);

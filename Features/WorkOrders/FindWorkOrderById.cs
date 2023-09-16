@@ -5,7 +5,7 @@ using WorkOrderApi.Contracts;
 using WorkOrderApi.Data;
 using WorkOrderApi.Shared;
 
-namespace WorkOrderApi.Features;
+namespace WorkOrderApi.Features.WorkOrders;
 
 public static class FindWorkOrderById
 {
@@ -50,7 +50,7 @@ public class FindWorkOrderByIdEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("v1/work-orders/{id}", async (int id, ISender sender) =>
+        app.MapGet("api/v1/work-orders/{id}", async (int id, ISender sender) =>
         {
             var query = new FindWorkOrderById.Query { Id = id };
             var result = await sender.Send(query);

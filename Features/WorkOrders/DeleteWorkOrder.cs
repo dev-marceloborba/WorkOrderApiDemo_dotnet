@@ -4,7 +4,7 @@ using WorkOrderApi.Data;
 using WorkOrderApi.Models;
 using WorkOrderApi.Shared;
 
-namespace WorkOrderApi.Features;
+namespace WorkOrderApi.Features.WorkOrders;
 
 public static class DeleteWorkOrder
 {
@@ -43,7 +43,7 @@ public class DeleteWorkOrderEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete("v1/work-orders/{id}", async (int id, ISender sender) =>
+        app.MapDelete("api/v1/work-orders/{id}", async (int id, ISender sender) =>
         {
             var command = new DeleteWorkOrder.Command { Id = id };
             var result = await sender.Send(command);
