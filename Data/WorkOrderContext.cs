@@ -1,16 +1,19 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WorkOrderApi.Data.Configuration;
 using WorkOrderApi.Models;
 
 namespace WorkOrderApi.Data;
 
-public class WorkOrderContext : DbContext
+public class WorkOrderContext : IdentityUserContext<IdentityUser>
 {
     public DbSet<WorkOrder> WorkOrders { get; set; }
 
     public string DbPath { get; }
 
-    public WorkOrderContext()
+    public WorkOrderContext(DbContextOptions<WorkOrderContext> options)
+        : base(options)
     {
         var folder = Environment.SpecialFolder.LocalApplicationData;
         var path = Environment.GetFolderPath(folder);
@@ -25,5 +28,7 @@ public class WorkOrderContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new WorkOrderConfiguration());
+        modelBuilder.ApplyConfiguration(new IdentityUserLoginConfiguration());
+        modelBuilder.ApplyConfiguration(new IdentityUserTokenConfiguraton());
     }
 }

@@ -1,10 +1,21 @@
 using Carter;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using WorkOrderApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddIdentityCore<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+}).AddEntityFrameworkStores<WorkOrderContext>();
 
 builder.Services.AddControllers(options =>
 {
@@ -42,8 +53,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// CreateWorkOrder.MapEndpoint(app);
 
 app.UseHttpsRedirection();
 

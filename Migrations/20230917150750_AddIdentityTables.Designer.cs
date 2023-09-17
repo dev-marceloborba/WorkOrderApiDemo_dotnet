@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkOrderApi.Data;
 
@@ -10,9 +11,11 @@ using WorkOrderApi.Data;
 namespace WorkOrderApi.Migrations
 {
     [DbContext(typeof(WorkOrderContext))]
-    partial class WorkOrderContextModelSnapshot : ModelSnapshot
+    [Migration("20230917150750_AddIdentityTables")]
+    partial class AddIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
