@@ -1,4 +1,4 @@
-This project sample is a demo based on a system that I was worked on in the past 4 years.
+This project sample of a work service order management.
 
 It's an ASP.NET 7 Web-API with the following resources/patterns:
 
@@ -7,5 +7,7 @@ It's an ASP.NET 7 Web-API with the following resources/patterns:
 - Validation
 - CQRS
 - Minimal APIs
+- Integration with ASP.NET Identity
+- Authentication using JWT (work in progress)
 
-I'll update this repo to include more features. For now, it's a CRUD application to handle work orders.
+
