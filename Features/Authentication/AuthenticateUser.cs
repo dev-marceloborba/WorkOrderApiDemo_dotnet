@@ -1,7 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Carter;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using WorkOrderApi.Contracts;
 using WorkOrderApi.Shared;
 
@@ -25,9 +29,22 @@ public static class AuthenticateUser {
     
     public static class AuthenticationService
     {
-        public static string GenerateToken(string email)
+        public static string GenerateToken(string name, string email)
         {
-            return email;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Settings.Settings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                  new Claim(ClaimTypes.Name, name),
+                  new Claim(ClaimTypes.Email, email)
+                }),
+                Expires = DateTime.UtcNow.AddHours(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
     
@@ -49,8 +66,8 @@ public static class AuthenticateUser {
             {
                 return Result.Failure<AuthenticationResponse>(new Error("AuthenticateUser.NotFound", "Usuário não existe"));
             }
-            var token = AuthenticationService.GenerateToken(user.Email);
-            var result = new AuthenticationResponse { Token = token, Expiration = DateTime.Now};
+            var token = AuthenticationService.GenerateToken(user.UserName, user.Email);
+            var result = new AuthenticationResponse { Token = token, Expiration = DateTime.UtcNow.AddHours(2)};
             return result;
         }
     }
@@ -60,7 +77,7 @@ public class AuthenticateUserEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/v1/work-orders/login", async (AuthenticationRequest request, ISender sender) =>
+        app.MapPost("api/v1/login", async (AuthenticationRequest request, ISender sender) =>
         {
             var command = new AuthenticateUser.Command { UserName = request.UserName, Password = request.Password};
             var result = await sender.Send(command);

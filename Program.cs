@@ -1,7 +1,11 @@
+using System.Text;
 using Carter;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using WorkOrderApi.Data;
+using WorkOrderApi.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,8 +46,29 @@ builder.Services.AddMediatR(config =>
 });
 builder.Services.AddCarter();
 builder.Services.AddValidatorsFromAssembly(assembly);
-
 builder.Services.AddDbContext<WorkOrderContext>();
+var key = Encoding.ASCII.GetBytes(Settings.Secret);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+          ValidateIssuer  = false,
+          ValidateAudience = false,
+          ValidateLifetime = true,
+          ValidateIssuerSigningKey = true,
+          IssuerSigningKey = new SymmetricSecurityKey(key)
+//          ValidAudience = "",
+//          ValidIssuer = "",
+        };
+    });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -55,13 +80,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors();
-
-app.MapCarter();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors();
+app.MapCarter();
 app.MapControllers();
 
 app.Run();
