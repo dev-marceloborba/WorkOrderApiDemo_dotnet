@@ -20,7 +20,7 @@ public static class CreateWorkOrder
 
     public class Validator : AbstractValidator<Command>
     {
-        public void CreateWorkOrder()
+        public Validator()
         {
             RuleFor(c => c.EquipmentName).NotEmpty().MinimumLength(2).MaximumLength(50);
             RuleFor(c => c.Description).NotEmpty().MaximumLength(200);
